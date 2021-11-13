@@ -1,7 +1,7 @@
 import java.util.HashSet;
 import java.util.Set;
 
-public class Deck implements{
+public class Deck {
 
     Set<Card> deck = new HashSet<Card>();
 
