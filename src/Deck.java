@@ -1,19 +1,19 @@
-import java.util.HashSet;
-import java.util.Set;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Stack;
 
 public class Deck {
 
-    Set<Card> deck = new HashSet<Card>();
+    Card[] deck = new Card[108];
 
 
     public Deck () {
        // will populate deck with each card
         for (int i = 0; i < 108; i++) {
-            for (int j = 0; j < 4; j++) {
-                Card card = new Card(i, j);
-                deck.add(card);
+            for (int j = 0; j < 20; j++) {
+                deck[j] = new Card(j, "blue");
             }
-
         }
 
         /*
@@ -29,16 +29,8 @@ public class Deck {
         4 Wild Draw 4
         */
 
-
-
-
         //constructor
         //populate a list of all the cards in the deck with the Card class
-    }
-
-    public void shuffle(){
-        // take the list of cards in the deck
-
     }
 
     public void deal(Player player){
@@ -50,5 +42,9 @@ public class Deck {
     public void draw (int numberOfCards, Player player){
         // pop one card off the deck
 
+    }
+
+    public static void main(String[] args) {
+        Deck deck = new Deck();
     }
 }
