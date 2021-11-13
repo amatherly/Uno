@@ -1,8 +1,7 @@
 public class Deck {
 
 
-
-    public Deck() {
+    public Deck(Card card) {
         //constructor
         //populate a list of all the cards in the deck with the Card class
     }
@@ -12,14 +11,13 @@ public class Deck {
 
     }
 
-    public void deal(){
+    public void deal(Player player){
         // pop 7 cards off the top
         // for(player : MainGame)?
 
-
     }
 
-    public void draw (int numberOfCards){
+    public void draw (int numberOfCards, Player player){
         // pop one card off the deck
 
     }
