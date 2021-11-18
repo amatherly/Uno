@@ -28,7 +28,7 @@ public class Card {
     //A set method if you want to create cards.
     public void setNumber(int num) {
         //Added a check to see if the number is valid for the game.
-        if (num > 14  num < 0) {
+        if (num > 14  || num < 0) {
             System.out.println("Number must be between 0 and 14! (Inclusive)");
         } else {
             number = num;
@@ -38,7 +38,7 @@ public class Card {
     //A set method for the color property of the card.
     public void setColor(String col) {
         //Added a check to see if the color is valid for the game.
-        if (col.equalsIgnoreCase("blue")  col.equalsIgnoreCase("yellow")  col.equalsIgnoreCase("green")  col.equalsIgnoreCase("red")) {
+        if (!col.equalsIgnoreCase("blue")  || !col.equalsIgnoreCase("yellow") ||  !col.equalsIgnoreCase("green") || !col.equalsIgnoreCase("red")) {
             System.out.println(col+" is not a valid color! Colors available are Blue, Yellow, Green, and Red.");
         } else {
             color = col;
