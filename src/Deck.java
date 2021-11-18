@@ -65,6 +65,7 @@ public class Deck {
 
         for (int i = 0; i < 8; i++) {
 
+            // will add 7 cards to each player with .pop
 
         }
         // pop 7 cards off the top
