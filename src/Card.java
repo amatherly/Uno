@@ -12,7 +12,7 @@ public class Card {
 
     //If you want to view what a card is
     public String toString() {
-        return "Number: "+this.number+" and Color: "+this.color;
+        return "Number: " + this.number + " and Color: " + this.color;
     }
 
     //If you want to know the value of a card

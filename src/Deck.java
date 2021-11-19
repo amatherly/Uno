@@ -1,8 +1,6 @@
 
 import java.util.*;
-
-
-// ASh
+// ASH
 public class Deck {
 
     Stack<Card> deck = new Stack<>();
@@ -30,15 +28,14 @@ public class Deck {
         Collections.shuffle(deck);
     }
 
-    public void deal(Player player){
 
-        for (int i = 0; i < 8; i++) {
-
-            // will add 7 cards to each player with .pop
-        }
-        // pop 7 cards off the top
-        // for(player : MainGame)?
-    }
+//   waiting on Player Class
+//    public void deal(Player player){
+//        for (int i = 0; i < 8; i++) {
+//            player.hand[i] = deck.pop();
+//            System.out.println(player.hand[i]);
+//        }
+//    }
 
     public void print() {
         for (Card card : deck) {
@@ -49,6 +46,5 @@ public class Deck {
     public static void main(String[] args) {
         Deck deck = new Deck();
         deck.shuffle();
-        deck.print();
     }
 }
