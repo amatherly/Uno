@@ -8,49 +8,20 @@ public class Deck {
     Stack<Card> deck = new Stack<>();
 
     public Deck () {
-        String color = "";
-
-        /*108 cards as follows
-19 Blue cards – 0-9
-19 Green cards – 0-9
-19 Red cards – 0-9
-19 Yellow cards – 0-9
-8 Draw Two cards – 2 each in blue, green, red, and yellow
-8 Reverse cards – 2 each in blue, green, red, and yellow
-8 Skip cards – 2 each in blue, green, red, and yellow
-4 Wild cards
-4 Wild Draw Four cards */
-
-        // BLUE CARDS
-        color = "blue";
-        for (int i = 0; i < 14; i++) {
-            Card card = new Card(i, color);
-            deck.add(card);
+        String[] colors = {"blue", "red", "green", "yellow"};
+        // Numbered Color Cards
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 14; j++) {
+                Card card = new Card(j, colors[i]);
+                deck.add(card);
+            }
         }
-
-        color = "green";
-        for (int i = 0; i < 14; i++) {
-            Card card = new Card(i, color);
-            deck.add(card);
-        }
-
-        color = "yellow";
-        for (int i = 0; i < 14; i++) {
-            Card card = new Card(i, color);
-            deck.add(card);
-        }
-
-        color = "red";
-        for (int i = 0; i < 14; i++) {
-            Card card = new Card(i, color);
-            deck.add(card);
-        }
-
-        for (int i = 0; i < 4; i++) {
-            Card card = new Card(14, null);
-        }
-        for (int i = 0; i < 4; i++) {
-            Card card = new Card(15, null);
+        // Wild Cards
+        for (int i = 14; i < 16; i++) {
+            for (int j = 0; j < 4; j++) {
+                Card card = new Card(i, null);
+                deck.add(card);
+            }
         }
 
 
@@ -66,7 +37,6 @@ public class Deck {
         for (int i = 0; i < 8; i++) {
 
             // will add 7 cards to each player with .pop
-
         }
         // pop 7 cards off the top
         // for(player : MainGame)?
