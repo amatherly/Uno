@@ -10,7 +10,7 @@ public class Deck {
     public Deck () {
         String[] colors = {"blue", "red", "green", "yellow"};
         // Numbered Color Cards
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 14; j++) {
                 Card card = new Card(j, colors[i]);
                 deck.add(card);
@@ -23,8 +23,6 @@ public class Deck {
                 deck.add(card);
             }
         }
-
-
     }
 
     public void shuffle (){
@@ -43,7 +41,6 @@ public class Deck {
     }
 
     public void print() {
-
         for (Card card : deck) {
                  System.out.println(card.toString());
         }
@@ -51,6 +48,7 @@ public class Deck {
 
     public static void main(String[] args) {
         Deck deck = new Deck();
+        deck.shuffle();
         deck.print();
     }
 }
