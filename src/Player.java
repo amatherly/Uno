@@ -3,10 +3,14 @@ import java.util.ArrayList;
 public class Player {
 	// each player will have a "hands" of an ArrayList that contain Card class object
 	private ArrayList<Card> player;
+	public String name;
+
+
 
 	// create a player with empty ArrayList of Card objects
-	public Player() {
+	public Player(String name) {
 		this.player = new ArrayList<Card>();
+		this.name = name;
 	}
 
 	/**

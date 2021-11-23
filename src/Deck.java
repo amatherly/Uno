@@ -17,7 +17,7 @@ public class Deck {
         // Wild Cards
         for (int i = 14; i < 16; i++) {
             for (int j = 0; j < 4; j++) {
-                Card card = new Card(i, null);
+                Card card = new Card(i, "wild");
                 deck.add(card);
             }
         }
@@ -28,23 +28,29 @@ public class Deck {
         Collections.shuffle(deck);
     }
 
-
-//   waiting on Player Class
-//    public void deal(Player player){
-//        for (int i = 0; i < 8; i++) {
-//            player.hand[i] = deck.pop();
-//            System.out.println(player.hand[i]);
-//        }
-//    }
+    public void deal(Player player){
+        for (int i = 0; i < 8; i++) {
+            player.add(deck.pop());
+        }
+    }
 
     public void print() {
         for (Card card : deck) {
-                 System.out.println(card.toString());
+            System.out.println(card.toString());
         }
     }
 
     public static void main(String[] args) {
-        Deck deck = new Deck();
-        deck.shuffle();
+
+
+//        Deck deck = new Deck();
+//        deck.shuffle();
+//        deck.print();
+//
+//        System.out.println("player 1s hand");
+//
+//        System.out.println();
+//        System.out.println("player 2s hand");
+
     }
 }
