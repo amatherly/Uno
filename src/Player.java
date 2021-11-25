@@ -28,8 +28,11 @@ public class Player {
 	 *  
 	 * @param i
 	 */
-	public void play(int i) {
+	public Card play(int i) {
+
+		// TODO: this needs to return the play card
 		this.player.remove(i);
+		return this.player.get(i);
 	}
 	
 	
