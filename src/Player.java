@@ -30,6 +30,7 @@ public class Player {
 	 */
 	public void play(int i) {
 		this.player.remove(i);
+		// TODO: need to return the card that removed
 	}
 	
 	
