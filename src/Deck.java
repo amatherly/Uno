@@ -23,13 +23,14 @@ public class Deck {
         }
     }
 
+
     public void shuffle (){
         // built in method!
         Collections.shuffle(deck);
     }
 
     public void deal(Player player){
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 7; i++) {
             player.add(deck.pop());
         }
     }
@@ -40,17 +41,4 @@ public class Deck {
         }
     }
 
-    public static void main(String[] args) {
-
-
-//        Deck deck = new Deck();
-//        deck.shuffle();
-//        deck.print();
-//
-//        System.out.println("player 1s hand");
-//
-//        System.out.println();
-//        System.out.println("player 2s hand");
-
-    }
 }
