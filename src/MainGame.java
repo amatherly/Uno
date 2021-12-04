@@ -157,5 +157,85 @@ public class MainGame {
         return false;
     }
 }
+String SpecialCard = "[";	// Creating the special card String that will will uses to later call the "Speical card"
+		
+		
+        // Each Special Card such as "Skip,Reverse,Draw,Wild,Wild Draw 4" will be its own String
+		// However, those strings will be attached to an integer case number (10,11,12,13,14)
+		// As when those cases are called that String will activate.
+
+        switch(this.value)
+        {
+            default: SpecialCard = String.valueOf(this.value); 
+                break;             
+                
+            case 10: SpecialCard = "Skip"; 
+                break; // When integer 10 is called this will activite the skip 
+                
+            case 11: SpecialCard += "Reverse"; 
+                break; // When integer 11 is called this will activite the Reverse
+                
+            case 12: SpecialCard += "Draw 2"; 
+                break;// When integer 12 is called this will activite the draw 
+          
+            case 13: SpecialCard += "Draw 4"; 
+            break;// When integer 12 is called this will activite the draw 
+                
+            case 14: SpecialCard += "Wild"; 
+                break;// When integer 12 is called this will activite the wild card
+           
+        }
+	}
+}
+// Logical Of How Special Cards Will Work
+boolean playerTurn; // this boolean value will keep try who turn it is, its essential for the skip special card
+if(Card.value)=10{ 
+playerTurn=false;
+switch(Card.value) {
+// This is for the Card Value 10 which is a special Card (skip) for this the logical will be 
+// For which ever players turn it is (we can use there string name to identify them) we will make the
+// boolean value to false which will skip them and finally we will switch the Card value
+//as well to give the next player a new set of card from the pile or we can use our shuffle method to do this
+
+case 12: // Draw 2
+    System.out.println("Drawing 2 cards...");
+    draw(2,deck);
+    break;
+    // This is for the Special Case 12 which is the draw 2 scenario in this case will we will 
+    // simply draw 2 from the from our preexisting deck class
+    
+   
+    if (Card.value == 14) // Draw 4
+    {
+        System.out.println("Drawing 4 cards...");
+        draw(4,deck);
+     // This is for the Special Case 14 which is the draw 2 scenario in this case will we will 
+        // simply draw 4 from the from our preexisting deck class
+    }
+    break;
+
+    case 14: // this case allows the user to choice whatever card they would like for this 
+    	// a scanner is needed for there input to be added 
+    while // We want to keep doing this untill the users types it exactly correct
+    {
+        System.out.print("What color card do you want?"
+        		+ "Options (Type Exactly As Seen!):\"Blue\", \"Red\", \"Green\", \"Yellow\", ");
+        input = new Scanner(System.in);
+    }  
+    if (input.hasNext("Blue") )
+        Color = "Blue";
+    else if (input.hasNext("Red") )
+        Color = "Red";
+    else if (input.hasNext("Green") )
+        Color = "Green";
+    else if (input.hasNext("Yellow") )
+        Color = "Yellow";
+
+    System.out.println("You chose: " + Color);
+}
+}
+}
+}
+// Then all those numbers should prompt our preexisting colors.
 
 
