@@ -172,12 +172,12 @@ String SpecialCard = "[";	// Creating the special card String that will will use
             case 10: SpecialCard = "Skip"; 
                 break; // When integer 10 is called this will activite the skip 
                 
-            case 11: SpecialCard += "Reverse"; 
+            case 21: SpecialCard += "Reverse"; 
                 break; // When integer 11 is called this will activite the Reverse
                 
-            case 12: SpecialCard += "Draw 2"; 
+            case 22: SpecialCard += "Draw 2"; 
                 break;// When integer 12 is called this will activite the draw 
-          
+          // used numbers 21& 22 because our other method is using 11&12
             case 13: SpecialCard += "Draw 4"; 
             break;// When integer 12 is called this will activite the draw 
                 
