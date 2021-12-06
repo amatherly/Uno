@@ -7,6 +7,7 @@ public class Player {
     private int size;
 
 
+
     // create a player with empty ArrayList of Card objects
     public Player(String name) {
         this.player = new ArrayList<Card>();

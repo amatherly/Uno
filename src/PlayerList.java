@@ -15,7 +15,8 @@ public class PlayerList<T> implements Iterable<T> {
 
     public int size;  // To keep track of how many nodes are in the list
 
-    private static class Node<T> {
+
+    public static class Node<T> {
         // before is reference to adjacent node closer to first (or null if this node is
         // the first)
         // after is reference to adjacent node closer to last (or null if this node is
@@ -29,31 +30,30 @@ public class PlayerList<T> implements Iterable<T> {
             this.before = before;
             this.after = after;
             this.data = data;
-
         }
     }
 
     // first is beginning node (no before), last is end node (no after)
     // They can both reference the same node if the list is one element long
     // The can both reference null if the list is empty
-    private Node<T> first, last;
+    public Node <Player> first, last;
 
     /**
      * Forward iterator class (conductor).
      */
-    private static class Conductor<T> implements Iterator<T> {
-        public Node<T> car; // Next node to visit
+    private static class Conductor<Player> implements Iterator<Player> {
+        public Node<Player> car; // Next node to visit
 
-        public Conductor(PlayerList<T> list) {
-            car = list.first; // Begin at first
+        public Conductor(PlayerList<Player> list) {
+            car = (Node<Player>) list.first; // Begin at first
         }
 
         public boolean hasNext() {
             return car != null; // No more to visit
         }
 
-        public T next() {
-            T data = car.data; // Remember current
+        public Player next() {
+            Player data = car.data; // Remember current
             car = car.after; // Advance to after car
             return data; // Return old car data
         }
@@ -63,7 +63,7 @@ public class PlayerList<T> implements Iterable<T> {
         public Node<T> car; // Next node to visit
 
         public BackwardsConductor(PlayerList<T> list) {
-            car = list.last; // Begin at last
+            car = (Node<T>) list.last; // Begin at last
         }
 
         public boolean hasNext() {
@@ -88,12 +88,12 @@ public class PlayerList<T> implements Iterable<T> {
 
         if (last == null) {
             // Empty list: one node is first and last
-            first = new Node<>(null, data, null); // creates a new node
+            first = new Node<Player>(null, (Player) data, null); // creates a new node
             last = first;
 
         } else {
             // adds a new node to the end of the list
-            last.after = new Node<>(last, data, null);
+            last.after = new Node<Player>(last, (Player) data, null);
             last = last.after;
         }
         size++;
@@ -106,14 +106,14 @@ public class PlayerList<T> implements Iterable<T> {
      * @return The element at that index
      * @throws IndexOutOfBoundsException if i is invalid
      */
-    public T get(int i) {
+    public Player get(int i) {
 
         // if the requested index is outside of the list, throw exception
         if (i < 0) {
             throw new IndexOutOfBoundsException();
         }
 
-        Node<T> current = first;
+        Node<Player> current = first;
 
         if (i <= size / 2) {
 
@@ -142,12 +142,12 @@ public class PlayerList<T> implements Iterable<T> {
      * @return The element at that index
      * @throws IndexOutOfBoundsException if i is invalid
      */
-    public T remove(int i) {
+    public Player remove(int i) {
 
         if (i < 0) {
             throw new IndexOutOfBoundsException();
         }
-        Node<T> current = first;
+        Node<Player> current = first;
         for (int j = 0; current != null && j < i; j++) {
             // Count our way up to desired element
             current = current.after;
@@ -175,7 +175,7 @@ public class PlayerList<T> implements Iterable<T> {
             last = last.before;
         }
         size--;
-        return current.data;
+        return (Player) current.data;
     }
 
     /**
@@ -219,22 +219,22 @@ public class PlayerList<T> implements Iterable<T> {
     public void reverse() {
 
         Node<T> temp;  // will be set to null
-        Node<T> current = first;  // start at the head of the list
+        Node<Player> current = first;  // start at the head of the list
 
 
         // reverses the entire list
         while (current != null) {
 
-            temp = current.before; // stores the current before into a temp node to use later
+            temp = (Node<T>) current.before; // stores the current before into a temp node to use later
             current.before = current.after; // switches the references of the current node
-            current.after = temp; // sets the after to the temp node from earlier
+            current.after = (Node<Player>) temp; // sets the after to the temp node from earlier
             current = current.before; // moves to the next node
         }
 
         // switches head and tail
-        temp = first;
+        temp = (Node<T>) first;
         first = last;
-        last = temp;
+        last = (Node<Player>) temp;
     }
 
     /**
@@ -245,47 +245,47 @@ public class PlayerList<T> implements Iterable<T> {
      * @param i    existing index in the list
      * @param data information to add into a new node
      * @return false if i is not an index in the list, true otherwise
-     */
-    public boolean add(int i, T data) {
+//     */
+//    public boolean add(int i, T data) {
+//
+//        // if the index is bigger than the list or a negative number return false
+//        if (i >= size || i < 0) {
+//            return false;
+//        }
+//
+//        // sets the current node to the head
+//        Node<Player> current = first;
+//
+//        if (i > 0) {
+//
+//            // if closer to the beginning of the list
+//            if (i <= size / 2) {
+//                for (int j = 0; j < i; j++) {
+//                    // Count our way up to desired element
+//                    current = current.after;
+//                }
+//            }
+//            // is index is closer to the end of the list, work backwards
+//            if (i >= size / 2) {
+//                current = last;  // start at the end
+//                for (int j = 0; j < size - i - 1; j++) {
+//                    current = current.before;
+//                }
+//            }
+//        }
+//        // If the index is 0, add to the beginning of the list and return, no further work needed
+//        else {
+//            first = new Node<T>(null, data, current);
+//            current.before = first;
+//            size++;
+//            return true;
+//        }
 
-        // if the index is bigger than the list or a negative number return false
-        if (i >= size || i < 0) {
-            return false;
-        }
-
-        // sets the current node to the head
-        Node<T> current = first;
-
-        if (i > 0) {
-
-            // if closer to the beginning of the list
-            if (i <= size / 2) {
-                for (int j = 0; j < i; j++) {
-                    // Count our way up to desired element
-                    current = current.after;
-                }
-            }
-            // is index is closer to the end of the list, work backwards
-            if (i >= size / 2) {
-                current = last;  // start at the end
-                for (int j = 0; j < size - i - 1; j++) {
-                    current = current.before;
-                }
-            }
-        }
-        // If the index is 0, add to the beginning of the list and return, no further work needed
-        else {
-            first = new Node<T>(null, data, current);
-            current.before = first;
-            size++;
-            return true;
-        }
-
-        Node<T> newNode = new Node(current.before, data, current); // creates the new node
-        Node<T> temp = current.before; // saves the node for later use
-        current.before = newNode;
-        temp.after = newNode;
-        size++;
-        return true;
-    }
+//        Node<T> newNode = new Node(current.before, data, current); // creates the new node
+//        Node<T> temp = current.before; // saves the node for later use
+//        current.before = newNode;
+//        temp.after = newNode;
+//        size++;
+//        return true;
+//    }
 }
