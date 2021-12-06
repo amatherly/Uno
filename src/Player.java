@@ -30,9 +30,11 @@ public class Player {
 	 */
 	public Card play(int i) {
 
-		// TODO: this needs to return the play card
-		this.player.remove(i);
-		return this.player.get(i);
+		
+		Card playingCard = this.player.get(i);
+		System.out.println(playingCard);
+		this.player.remove(i);		
+		return playingCard;
 	}
 	
 	
