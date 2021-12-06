@@ -6,7 +6,7 @@ public class Deck {
     Stack<Card> deck = new Stack<>();
 
     public Deck () {
-        String[] colors = {"blue", "red", "green", "yellow"};
+        String[] colors = {"Blue", "Red", "Green", "Yellow"};
         // Numbered Color Cards
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 14; j++) {
@@ -17,7 +17,7 @@ public class Deck {
         // Wild Cards
         for (int i = 14; i < 16; i++) {
             for (int j = 0; j < 4; j++) {
-                Card card = new Card(i, "wild");
+                Card card = new Card(i, "Wild");
                 deck.add(card);
             }
         }
@@ -47,10 +47,10 @@ public class Deck {
 //        deck.shuffle();
 //        deck.print();
 //
-//        System.out.println("player 1s hand");
+//        System.out.println("Player 1s hand: ");
 //
 //        System.out.println();
-//        System.out.println("player 2s hand");
+//        System.out.println("Player 2s hand: ");
 
     }
 }
