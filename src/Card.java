@@ -38,7 +38,7 @@ public class Card {
     //A set method for the color property of the card.
     public void setColor(String col) {
         //Added a check to see if the color is valid for the game.
-        if (!col.equalsIgnoreCase("blue")  || !col.equalsIgnoreCase("yellow") ||  !col.equalsIgnoreCase("green") || !col.equalsIgnoreCase("red")) {
+        if (!col.equalsIgnoreCase("Blue")  || !col.equalsIgnoreCase("Yellow") ||  !col.equalsIgnoreCase("Green") || !col.equalsIgnoreCase("Red")) {
             System.out.println(col+" is not a valid color! Colors available are Blue, Yellow, Green, and Red.");
         } else {
             color = col;
