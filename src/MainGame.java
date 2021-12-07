@@ -2,213 +2,200 @@ import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.Stack;
 
-public class Main {
+public class MainGame {
+	private int currentPlayers;
+	private  int drawCards = 0;
 
-    /**
-     * @param args
-     */
-	
-	public static boolean game = true;
-	public static int numOfPlayers = 0;
-	
-    public static void main(String args[]) {
-        Deck deck = new Deck();
-        Stack<Card> discard = new Stack<>();
+	public static void main(String args[]) {
+		Deck deck = new Deck();
+		Stack<Card> discard = new Stack<>();
 
-        deck.shuffle();
+		deck.shuffle();
+		//        deck.print();
 
-        while (game) {
-
-            Scanner scanner = new Scanner(System.in);
-            int numOfPlayers = 0;
-//////////////////
-            int input = 0;
-            boolean isNumber;
-            while(true) {
-            	System.out.print("Number of Players: ");
-                if (scanner.hasNextInt()) {
-                	numOfPlayers = scanner.nextInt();
-                    if (numOfPlayers >= 2 && numOfPlayers <= 8) {
-                        input = numOfPlayers;
-                        break;
-                    } else {
-                        System.out.println("Number of players must be between 2 and 8.");
-                    }
-
-                } else {
-                    System.out.println("Invalid input type! Must be a number.");
-                    isNumber = false;
-                    scanner.next();
-                }
-            } 
-////////////////
-            Player player[] = new Player[numOfPlayers];
+		boolean gameNotWon = true;
+		int playersHandSize = 0;
 
 
-            for (int i = 0; i < numOfPlayers; i++) {
-                System.out.print("Player " + (i + 1) + "'s name: ");
-                Player ply = new Player(scanner.next());
-                player[i] = ply;
-                deck.deal(player[i]);
-            }
+		while (true) {
 
-            Player[] temp = new Player[player.length];
+			Scanner scanner = new Scanner(System.in);
+			System.out.println("Number of Players:");
+			int numOfPlayers = scanner.nextInt();
+			//            Player player[] = new Player[numOfPlayers];
 
-            for (int i = 0; i < player.length; i++) {
-                temp[i] = player[i];
-            }
+			PlayerList<Player> player = new PlayerList<>();
 
+			for (int i = 0; i < numOfPlayers; i++) {
+				System.out.println("Player " + (i + 1) + "'s name: ");
+				Player ply = new Player(scanner.next());
+				player.add(ply);
+				deck.deal(player.get(i));
+			}
 
-            discard.push(deck.deck.pop());
-            System.out.println("");
-            System.out.println("Creating deck... ");
-            System.out.println("");
+			discard.push(deck.deck.pop());
+			System.out.println("creating deck:");
 
-          
-            while (!isUno(player)) {
+			while (gameNotWon) {
 
-                for (int p = 0; p < player.length; p++) {
+				int drawCards = 0;
+				int specialEffect = 0;
 
-                   // System.out.println(playersHandSize);
+				for (int p = 0; p < player.size(); p++) {
 
-                    System.out.println(player[p].name + "'s hand");
-                    System.out.println("");
-                    player[p].hand();
-
-                    System.out.println("");
-                    System.out.println("");
-                    System.out.println("Player " + player[p].name + "'s turn: ");
-                    System.out.println("What card will you play?");
-                    System.out.println("Top Card: " + discard.peek());
-
-                    input = 0;
-                    //ask for play, determine if valid
-                    while (true) {
-                        try {
-                            input = scanner.nextInt();
-                            break;
-                        } catch (Exception e) {
-                            System.out.println("Please enter a valid Index.");
-                        }
-                    }
-                    
-                    Card playerDiscard = player[p].canPlay(input);
-
-                    // for easier reading
-                    String PlayerCardColor = playerDiscard.getColor();
-                    int playerCardNumber = playerDiscard.getNumber();
+					//PHASE 1: Damage
+					// Draw card 	: 1                	
+					// Skip 		: 2
+					if(specialEffect == 1) {
+						//Draw number of drawCards
+						for(int i = 0; i < drawCards; i++) {
+							player.get(p).add(deck.deck.pop());
+						}               		
+						specialEffect = 0;
+					}
+					if(specialEffect == 2) {
+						System.out.println("You got SKIP!");                     	
+						specialEffect = 0;
+						continue;
+					}
 
 
-                    //check for special cards
-                    if (checkForSpecialCards(playerDiscard)) {
 
-                        int drawCards = 0;
+					// PHASE 2: player play
+					playersHandSize = player.get(p).getSize();
 
-                        // If current player discarded a card that requires the next player to draw
-                        if (playerCardNumber == 13 || playerCardNumber == 14) {
-                        	//TODO: check for color
-                            drawCards = 2;
-                         // remove the card from the players hand
-                            player[p].discard(input);
+					System.out.println(playersHandSize);
 
-                            //add the chosen card to the discard pile
-                            discard.push(playerDiscard);
-                            
-                            System.out.println(player[p].name + " added " + drawCards + " to the next players hand!!!!");
-                        } else if (playerCardNumber == 15) {
-                            drawCards = 4;
-                         // remove the card from the players hand
-                            player[p].discard(input);
+					System.out.println(player.get(p).name + "'s hand");
+					player.get(p).hand();
 
-                            //add the chosen card to the discard pile
-                            discard.push(playerDiscard);
-                            
-                            System.out.println(player[p].name + " added " + drawCards + " to the next players hand!!!!");
-                        } 
-                        
-                     
-                        // adds number of cards for the special card
-                        for (int i = 0; i < drawCards; i++) {
-                            //check if the next player is the first player in the array
-                            if (p + 1 > player.length - 1)
-                                player[0].add(deck.deck.pop());
-                            else
-                                player[p + 1].add(deck.deck.pop());
-                        }
-                    }
+					System.out.println("Player " + player.get(p).name + "'s turn: ");
+					System.out.println("What card will you play?");
+					System.out.println("Top Card: " + discard.peek());
 
-                    // if the discarded cards color matches the discard piles top card OR it matches the number
-                    else if (PlayerCardColor == discard.peek().getColor() || playerCardNumber == discard.peek().getNumber()) {
 
-                        // remove the card from the players hand
-                        player[p].discard(input);
+					//ask for play, determine if valid
+					int input = scanner.nextInt();
 
-                        //add the chosen card to the discard pile
-                        discard.push(playerDiscard);
-                    } else {
-                        System.out.println("ATTENTION:");
-                        System.out.println("That was not a valid card, drew one from the deck and added it to your hand.");
-                        System.out.println();
-                        player[p].add(deck.deck.pop());
-                    }
-                }
-            }
-        }
-    }
+					Card playerDiscard = player.get(p).canPlay(input);
 
-    public static void checkForSpecialCards(Card playerDiscard) {
-       
-    	switch(playerDiscard.getNumber()) {
-    	case 11: // some skip method
-      
-    	case 12: // some reverse method
-    		
-    	case 13: // draw 2 color
-    		
-    	case 14: // draw 2 wild
-    		
-    	case 15: // draw 4 wild
-    	
-    	}
-    }
-    
-    public static boolean isUno(Player[] player) {
-    	for(int i=0; i<player.length; i++) {
-    		if (player[i].size == 1) {
-                System.out.println(player[i].name + " has UNO!!!");
-            } else if (player[i].size == 0) {
-                System.out.println(player[i].name + " has won the game!");
-                return true;
-            }
-    	}
-    	return false;
-    }
-    
-    public static boolean canMove(Card discard, Player player, Card topCard) {
-    	if(discard.getColor() != topCard.getColor() || discard.getNumber() != topCard.getNumber() && discard.getNumber() != 14 && discard.getNumber() != 15) {
-    		return false;
-    	} else {
-    		return true;
-    	}
-    }
-    
-    public static void skip(Player player, Card discard, int index) {
- 
-    	
-    	System.out.println(player.name + " played a skip card! " + player.name + " 's turn was skipped.");
-    	// remove the card from the players hand
-    	player.discard(index);
+					// for easier reading
+					String PlayerCardColor = playerDiscard.getColor();
+					int playerCardNumber = playerDiscard.getNumber();
 
-    	//add the chosen card to the discard pile
-    	discard.push(discard);
-                
-    	if(p+1 > numOfPlayers) {
-    		p = 0;
-    	} 
-    	p++;
-    }
-           
-    }
-    
-    
+
+					if (discard.peek().color == "wild") {
+						// remove the card from the players hand
+						player.get(p).discard(input);
+
+						//add the chosen card to the discard pile
+						discard.push(playerDiscard);
+					}
+
+
+					//check for special cards
+					if (checkForSpecialCards(playerDiscard)) {
+
+
+						// If current player discarded a card that requires the next player to draw
+						if (playerCardNumber == 13 || playerCardNumber == 14) {
+							drawCards = 2;
+							specialEffect = 1;
+							// remove the card from the players hand
+							player.get(p).discard(input);
+
+							//add the chosen card to the discard pile
+							discard.push(playerDiscard);
+							System.out.println(player.get(p).name + " added " + drawCards + "to the next players hand!!!!");
+						}
+						else if (playerCardNumber == 15) {
+							drawCards = 4;
+							specialEffect = 1;
+							// remove the card from the players hand
+							player.get(p).discard(input);
+
+							//add the chosen card to the discard pile
+							discard.push(playerDiscard);
+							System.out.println(player.get(p).name + " added " + drawCards + "to the next players hand!!!!");
+						}
+						else {
+							drawCards = 0;
+						}
+
+
+						if(playerCardNumber == 11){
+							// remove the card from the players hand
+							player.get(p).discard(input);
+
+							//add the chosen card to the discard pile
+							discard.push(playerDiscard);
+							specialEffect = 2;
+						}
+
+						if(playerCardNumber == 12){
+
+							// remove the card from the players hand
+							player.get(p).discard(input);
+
+							//add the chosen card to the discard pile
+							discard.push(playerDiscard);
+							player.reverse();
+							p++;
+							break;
+						}
+
+
+//                        // adds number of cards for the special card
+//                        for (int i = 0; i < drawCards; i++) {
+//                            //check if the next player is the first player in the array
+//                            if (p + 1 > player.size() - 1)
+//                                player.get(0).add(deck.deck.pop());
+//                            else
+//                                player.get(p+1).add(deck.deck.pop());
+//                        }
+//
+//
+//                        System.out.println(player.get(p).name + " added " + drawCards + "to the next players hand!!!!");
+//                        // remove the card from the players hand
+//                        player.get(p).discard(input);
+//
+//                        //add the chosen card to the discard pile
+//                        discard.push(playerDiscard);
+						
+					}
+
+					// if the discarded cards color matches the discard piles top card OR it matches the number
+					else if (PlayerCardColor == discard.peek().getColor() || playerCardNumber == discard.peek().getNumber()) {
+
+						// remove the card from the players hand
+						player.get(p).discard(input);
+
+						//add the chosen card to the discard pile
+						discard.push(playerDiscard);
+					} else {
+						System.out.println("ATTENTION:");
+						System.out.println("That was not a valid card, drew one from the deck and added it to your hand.");
+						System.out.println();
+						player.get(p).add(deck.deck.pop());
+					}
+
+					if (playersHandSize == 1) {
+						System.out.println(player.get(p).name + " has UNO!!!");
+					} else if (playersHandSize == 0) {
+						System.out.println(player.get(p).name + " has won the game!");
+						gameNotWon = false;
+						break;
+					}
+				}
+			}
+		}
+	}
+
+	public static boolean checkForSpecialCards(Card playerDiscard){
+		if(playerDiscard.getNumber() > 10 && playerDiscard.getNumber() < 16){
+			return true;
+		}
+		return false;
+	}
 }
+
