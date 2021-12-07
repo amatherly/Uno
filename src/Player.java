@@ -4,8 +4,7 @@ public class Player {
     // each player will have a "hands" of an ArrayList that contain Card class object
     private ArrayList<Card> player;
     public String name;
-    private int size;
-
+    public int size;
 
 
     // create a player with empty ArrayList of Card objects
@@ -44,21 +43,21 @@ public class Player {
      * This will show all the card in a player hand
      */
     public void hand() {
-        System.out.print("[");
+        System.out.print("[ ");
         String special = "";
         for (int i = 0; i < player.size(); i++) {
 
             if (player.get(i).number >= 11) {
                 if (player.get(i).number == 11) {
-                    special = "Skip";
+                    special = "Skip ";
                 } else if (player.get(i).number == 12) {
-                    special = "Reverse";
+                    special = "Reverse ";
                 } else if (player.get(i).number == 13) {
-                    special = "Draw 2";
+                    special = "Draw 2 ";
                 } else if (player.get(i).number == 14) {
-                    special = "Draw 2";
+                    special = "Draw 2 ";
                 } else if (player.get(i).number == 15) {
-                    special = "Draw 4";
+                    special = "Draw 4 ";
                 }
             }
             else
