@@ -1,74 +1,276 @@
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.Stack;
 
-public class MainGame {
-private int currentPlayers;
+public class Main {
 
-    public static void main(String args[]){
+    /**
+     * @param args
+     */
+
+	public static boolean game = true;
+	public static int numOfPlayers = 0;
+
+    public static void main(String args[]) {
         Deck deck = new Deck();
         Stack<Card> discard = new Stack<>();
+
         deck.shuffle();
 
-
-        while (true) {
+        while (game) {
 
             Scanner scanner = new Scanner(System.in);
-            System.out.println("Number of Players:");
-            int numOfPlayers = scanner.nextInt();
+            int numOfPlayers = 0;
+            int drawCards = 0;
+			int specialEffect = 0;
+			Player iCallReverse = null;
+//////////////////
+            int input = 0;
+            boolean isNumber;
+            while(true) {
+            	System.out.print("Number of Players: ");
+                if (scanner.hasNextInt()) {
+                	numOfPlayers = scanner.nextInt();
+                    if (numOfPlayers >= 2 && numOfPlayers <= 8) {
+                        input = numOfPlayers;
+                        break;
+                    } else {
+                        System.out.println("Number of players must be between 2 and 8.");
+                    }
+
+                } else {
+                    System.out.println("Invalid input type! Must be a number.");
+                    isNumber = false;
+                    scanner.next();
+                }
+            } 
+////////////////
             Player player[] = new Player[numOfPlayers];
 
+
             for (int i = 0; i < numOfPlayers; i++) {
-                System.out.println("Player " + (i+1) + "'s name: ");
-                player[i] = new Player(scanner.next());
+                System.out.print("Player " + (i + 1) + "'s name: ");
+                Player ply = new Player(scanner.next());
+                player[i] = ply;
                 deck.deal(player[i]);
             }
 
+            Player[] temp = new Player[player.length];
+
+            for (int i = 0; i < player.length; i++) {
+                temp[i] = player[i];
+            }
 
 
-            System.out.println("creating deck:");
-
-//            deck.print();
-
-            System.out.println();
-            System.out.println();
-            System.out.println();
-
-            //TODO: there needs to be a loop here
-
-            System.out.println("player 1s hand");
-            player[0].hand();
+            discard.push(deck.deck.pop());
+            System.out.println("");
+            System.out.println("Creating deck... ");
+            System.out.println("");
 
 
-            System.out.println();
-            System.out.println("player 2s hand");
-            player[1].hand();
+            while (!isUno(player)) {
+                for (int p = 0; p < player.length; p++) {
+                	// Player taking specialEffect
+					// Draw card 	: 1                	
+					// Skip			: 2
+                	// Reverse		: 3
+                	if(specialEffect == 1) {
+						//Draw number of drawCards
+						for(int i = 0; i < drawCards; i++) {
+							player[p].add(deck.deck.pop());
+						}               		
+						specialEffect = 0;
+						drawCards = 0;
+					}
+					if(specialEffect == 2) {
+						System.out.println("You got SKIP!");                     	
+						specialEffect = 0;
+						continue;
+					}
+					
+					if(specialEffect == 3) {
+						System.out.println("Reverse!");                     	
+						specialEffect = 0;
+						reverse(player);
+						// find the one who play reverse
+						for(int i = 0; i < player.length; i++) {
+							if(player[i] == iCallReverse) {
+								// i is the one who play reverse
+								if(i == player.length - 1) {
+									p = 0;
+								}
+								else {
+									p = i + 1;
+								}
+							}
+						
+						}
+							
+					}
+                   // System.out.println(playersHandSize);
+
+                    System.out.println(player[p].name + "'s hand");
+                    System.out.println("");
+                    player[p].hand();
+
+                    System.out.println("");
+                    System.out.println("");
+                    System.out.println("Player " + player[p].name + "'s turn: ");
+                    System.out.println("What card will you play?");
+                    System.out.println("Top Card: " + discard.peek());
+
+                    input = 0;
+                    //ask for play, determine if valid
+                    while (true) {
+                        try {
+                            input = scanner.nextInt();
+                            break;
+                        } catch (Exception e) {
+                            System.out.println("Please enter a valid Index.");
+                        }
+                    }
+
+                    Card playerDiscard = player[p].canPlay(input);
+
+                    // for easier reading
+                    String PlayerCardColor = playerDiscard.getColor();
+                    int playerCardNumber = playerDiscard.getNumber();
 
 
+                    //check for special cards
+                    if (checkForSpecialCards(playerDiscard)) {
 
-            System.out.println("Player 1's turn: ");
-            System.out.println("Discard card:");
-            System.out.println("What card will you play?");
+                        
+                    	// If current player discarded a card that requires the next player to draw
+                    	if (playerCardNumber == 13 || playerCardNumber == 14) {
+                    		//TODO: check for color
+                    		drawCards = 2;
+                    		specialEffect = 1;
+                    		// remove the card from the players hand
+                    		player[p].discard(input);
+
+                    		//add the chosen card to the discard pile
+                    		discard.push(playerDiscard);
+
+                    		System.out.println(player[p].name + " added " + drawCards + " to the next players hand!!!!");
+                    	} 
+                    	else if (playerCardNumber == 15) {
+                    		drawCards = 4;
+                    		specialEffect = 1;
+                    		// remove the card from the players hand
+                    		player[p].discard(input);
+
+                    		//add the chosen card to the discard pile
+                    		discard.push(playerDiscard);
+
+                    		System.out.println(player[p].name + " added " + drawCards + " to the next players hand!!!!");
+                    	}
+						if(playerCardNumber == 11){
+							// remove the card from the players hand
+							player[p].discard(input);
+
+							//add the chosen card to the discard pile
+							discard.push(playerDiscard);
+							specialEffect = 2;
+						}
+						
+						if(playerCardNumber == 12){ // reverse
+							iCallReverse = player[p];
+							// remove the card from the players hand
+							player[p].discard(input);
+
+							//add the chosen card to the discard pile
+							discard.push(playerDiscard);
+							specialEffect = 3;
+						}
 
 
-            int input = scanner.nextInt();
+//                    	// adds number of cards for the special card
+//                    	for (int i = 0; i < drawCards; i++) {
+//                    		//check if the next player is the first player in the array
+//                    		if (p + 1 > player.length - 1)
+//                    			player[0].add(deck.deck.pop());
+//                    		else
+//                    			player[p + 1].add(deck.deck.pop());
+//                    	}
+                    }
 
-            //TODO: loop through each player
-            Card discardCard = player[0].play(input);
-            if(discardCard.getColor() == discard.getColor());
-            discard.push(discardCard);
-            System.out.println(discardCard);
-            //it has to be the same number OR the same color
+                    // if the discarded cards color matches the discard piles top card OR it matches the number
+                    else if (PlayerCardColor == discard.peek().getColor() || playerCardNumber == discard.peek().getNumber()) {
 
-            //change player
-            // player i plays a card
-            // loop until Player[i].size == 1
-            // if they can play it they win
+                        // remove the card from the players hand
+                        player[p].discard(input);
 
-
-
+                        //add the chosen card to the discard pile
+                        discard.push(playerDiscard);
+                    } else {
+                        System.out.println("ATTENTION:");
+                        System.out.println("That was not a valid card, drew one from the deck and added it to your hand.");
+                        System.out.println();
+                        player[p].add(deck.deck.pop());
+                    }
+                }
+            }
         }
-        }
-
     }
 
+    public static boolean checkForSpecialCards(Card playerDiscard){
+		if(playerDiscard.getNumber() > 10 && playerDiscard.getNumber() < 16){
+			return true;
+		}
+		return false;
+	}
+
+    public static boolean isUno(Player[] player) {
+    	for(int i=0; i<player.length; i++) {
+    		if (player[i].size == 1) {
+                System.out.println(player[i].name + " has UNO!!!");
+            } else if (player[i].size == 0) {
+                System.out.println(player[i].name + " has won the game!");
+                return true;
+            }
+    	}
+    	return false;
+    }
+
+    public static boolean canMove(Card discard, Player player, Card topCard) {
+    	if(discard.getColor() != topCard.getColor() || discard.getNumber() != topCard.getNumber() && discard.getNumber() != 14 && discard.getNumber() != 15) {
+    		return false;
+    	} else {
+    		return true;
+    	}
+    }
+
+    public static void reverse(Player[] arrayPlayer) {
+    	int firstIndex = 0;
+    	int lastIndex = arrayPlayer.length - 1;
+    	while (firstIndex < lastIndex) {
+    		Player temp = arrayPlayer[firstIndex];
+    		arrayPlayer[firstIndex] = arrayPlayer[lastIndex];
+    		arrayPlayer[lastIndex] = temp;
+    		firstIndex = firstIndex + 1;
+    		lastIndex = lastIndex - 1;
+    	}
+    }
+
+    
+//    public static void skip(Player player, Card discard, int index) {
+//
+//
+//    	System.out.println(player.name + " played a skip card! " + player.name + " 's turn was skipped.");
+//    	// remove the card from the players hand
+//    	player.discard(index);
+//
+//    	//add the chosen card to the discard pile
+//    	discard.push(discard);
+//
+//    	if(p+1 > numOfPlayers) {
+//    		p = 0;
+//    	} 
+//    	p++;
+//    }
+//
+    }
 
