@@ -1,12 +1,11 @@
-
 import java.util.*;
-// ASH
+
 public class Deck {
 
     Stack<Card> deck = new Stack<>();
 
     public Deck () {
-        String[] colors = {"blue", "red", "green", "yellow"};
+        String[] colors = {"Blue", "Red", "Green", "Yellow"};
         // Numbered Color Cards
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 14; j++) {
@@ -15,12 +14,12 @@ public class Deck {
             }
         }
         // Wild Cards
-        for (int i = 14; i < 16; i++) {
-            for (int j = 0; j < 4; j++) {
-                Card card = new Card(i, "wild");
-                deck.add(card);
-            }
-        }
+//        for (int i = 14; i < 16; i++) {
+//            for (int j = 0; j < 4; j++) {
+//                Card card = new Card(i, "Wild");
+//                deck.add(card);
+//            }
+//        }
     }
 
 
@@ -30,7 +29,7 @@ public class Deck {
     }
 
     public void deal(Player player){
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < 2; i++) {
             player.add(deck.pop());
         }
     }
