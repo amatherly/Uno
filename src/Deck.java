@@ -30,7 +30,7 @@ public class Deck {
 
     // Deals 7 Cards to each player
     public void deal(Player player){
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 7; i++) {
             player.add(deck.pop());
         }
     }
