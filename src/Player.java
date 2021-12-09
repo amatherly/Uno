@@ -68,14 +68,7 @@ public class Player {
             } else {
                 System.out.print(player.get(i) + " " + special + ", ");
             }
-
         }
         System.out.print("]");
     }
-
-    public int getSize() {
-        return size;
-    }
-
-
 }

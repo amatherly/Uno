@@ -235,6 +235,17 @@ public class PlayerList<T> implements Iterable<T> {
         temp = (Node<T>) first;
         first = last;
         last = (Node<Player>) temp;
+
+    }
+
+    public void skip(int p){
+        Node<Player> current = first;
+        for (int j = 0; j < p; j++) {
+            // Count our way up to desired element
+            current = current.after;
+        }
+        current = current.after;
+
     }
 
     /**
@@ -280,10 +291,10 @@ public class PlayerList<T> implements Iterable<T> {
 //            size++;
 //            return true;
 //        }
-
+//
 //        Node<T> newNode = new Node(current.before, data, current); // creates the new node
-//        Node<T> temp = current.before; // saves the node for later use
-//        current.before = newNode;
+//        Node<T> temp = (Node<T>) current.before; // saves the node for later use
+//        current.before = (Node<Player>) newNode;
 //        temp.after = newNode;
 //        size++;
 //        return true;
