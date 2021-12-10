@@ -2,6 +2,10 @@
 import java.util.Scanner;
 import java.util.Stack;
 
+// To run the game:
+// run the main method in the Main Class
+// To play a card, use it's index as the input for the scanner
+
 public class Main {
     public static boolean game = true;
     public static int numOfPlayers = 0;
@@ -228,6 +232,4 @@ public class Main {
             lastIndex = lastIndex - 1;
         }
     }
-
-
 }
